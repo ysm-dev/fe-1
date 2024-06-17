@@ -1,8 +1,13 @@
 import "app/globals.css"
 
 import { Providers } from "components/Providers"
+import { Toaster } from "components/ui/sonner"
 import { HOST } from "constants/urls"
+import { GeistMono } from "geist/font/mono"
+import { GeistSans } from "geist/font/sans"
+import { cn } from "lib/utils"
 import type { Metadata } from "next"
+import { useTheme } from "next-themes"
 import type { ReactNode } from "react"
 
 type Props = {
@@ -26,9 +31,12 @@ export const generateMetadata = async (): Promise<Metadata> => {
   }
 }
 
+export const dynamic = "force-dynamic"
+export const fetchCache = "force-no-store"
+
 export default function RootLayout({ children }: Props) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className={cn(GeistMono.variable, GeistSans.variable)}>
       <head>
         <meta
           name="viewport"
@@ -36,7 +44,10 @@ export default function RootLayout({ children }: Props) {
         />
       </head>
       <body className="antialiased">
-        <Providers>{children}</Providers>
+        <main className="mx-auto max-w-screen-sm bg-background">
+          <Providers>{children}</Providers>
+        </main>
+        <Toaster richColors position="bottom-right" />
       </body>
     </html>
   )
