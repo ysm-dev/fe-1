@@ -18,7 +18,10 @@ export const QueryProvider = ({ children, ...props }: Props) => {
   return (
     <QueryClientProvider {...props} client={client}>
       {/* <HydrationBoundary state={dehydrate(client)}> */}
-      <ReactQueryStreamedHydration>{children}</ReactQueryStreamedHydration>
+      <ReactQueryStreamedHydration>
+        {/*  */}
+        {children}
+      </ReactQueryStreamedHydration>
       {/* </HydrationBoundary> */}
       {/* {!isProd() && <ReactQueryDevtools initialIsOpen={false} />} */}
     </QueryClientProvider>

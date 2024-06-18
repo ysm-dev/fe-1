@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { IconFingerprint } from "@tabler/icons-react"
 import { Button } from "components/ui/button"
 import { Input } from "components/ui/input"
-import type { User } from "hooks/useUser"
+import type { R, User } from "hooks/useUser"
 import { login } from "lib/passkeys/login"
 import { signup } from "lib/passkeys/signup"
 import { db } from "lib/supabase/db"
@@ -50,10 +50,18 @@ export default function Page() {
         setId("")
       }
     } else {
+      const {
+        user: { avatar, twitter, name },
+      } = await fetch(`https://ungh.cc/users/${username}`).then<R>((res) =>
+        res.json(),
+      )
       await db.setItem(`user:${id}`, {
         id,
         username,
-      })
+        avatar,
+        name,
+        twitter,
+      } satisfies User)
       setIsRegistered(true)
       setId(id)
     }

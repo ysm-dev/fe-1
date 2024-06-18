@@ -20,7 +20,7 @@ export function PostCard(props: Props) {
 export function Pending() {
   return (
     <article className="flex h-fit animate-pulse flex-col items-center gap-2 overflow-hidden rounded-2xl border">
-      <div className="aspect-square w-full bg-foreground/15" />
+      <div className="aspect-[8/5] w-full bg-foreground/15" />
       <div className="flex w-full flex-col gap-2 p-3 text-left">
         <div className={cn("h-5 w-2/3 rounded-full bg-foreground/15 py-1")} />
         <div className="size-7" />

@@ -27,19 +27,10 @@ export const useUser = (paramId?: string) => {
         return
       }
 
-      const { username } = user
-
-      const data = await fetch(`https://ungh.cc/users/${username}`).then<R>(
-        (res) => res.json(),
-      )
-
-      return {
-        ...data.user,
-        id,
-      } satisfies User
+      return user
     },
-    initialData: client.getQueryData<User>(["user", id]),
-    staleTime: ms("10m"),
+    initialData: () =>
+      client.getQueryData<User[]>(["users"])?.find((u) => u.id === id),
   })
 
   return { user: user!, ...rest }

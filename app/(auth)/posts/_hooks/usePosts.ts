@@ -14,12 +14,10 @@ import { db } from "lib/supabase/db"
 import { assert } from "utils/assert"
 
 export const usePosts = () => {
-  const client = useQueryClient()
-
   const { data, ...rest } = useSuspenseQuery({
     queryKey: ["posts"],
-    queryFn: async () => {
-      const posts = await pipe(
+    queryFn: () =>
+      pipe(
         db.getKeys(`post`),
         toAsync,
         map(async (k) => {
@@ -35,16 +33,8 @@ export const usePosts = () => {
         concurrent(10),
         sortBy((u) => u.createdAt),
         reverse,
-        tap(
-          map((p) => {
-            client.setQueryData(["posts", p.id], p)
-          }),
-        ),
         toArray,
-      )
-
-      return posts
-    },
+      ),
   })
 
   return { posts: data!, ...rest }

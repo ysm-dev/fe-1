@@ -7,7 +7,7 @@ function makeQueryClient() {
     defaultOptions: {
       queries: {
         retry: 0,
-        staleTime: ms("10m"),
+        staleTime: ms("1h"),
       },
       mutations: {
         onError: (e: any) => {

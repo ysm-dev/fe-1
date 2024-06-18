@@ -29,8 +29,8 @@ export const usePost = (paramId?: string) => {
 
       return post
     },
-    initialData: client.getQueryData<Post>(["posts", id]),
-    staleTime: ms("10m"),
+    initialData: () =>
+      client.getQueryData<Post[]>(["posts"])?.find((p) => p.id === id),
   })
 
   return { post: data!, ...rest }

@@ -16,8 +16,6 @@ import { db } from "lib/supabase/db"
 import { assert } from "utils/assert"
 
 export const useUsers = () => {
-  const client = useQueryClient()
-
   const { data, ...rest } = useSuspenseQuery({
     queryKey: ["users"],
     queryFn: () =>
@@ -25,7 +23,6 @@ export const useUsers = () => {
         db.getKeys(`user`),
         toAsync,
         map(async (k) => {
-          console.log({ k })
           const [user, meta] = await Promise.all([
             db.getItem<User>(k),
             db.getMeta(k),
@@ -38,11 +35,6 @@ export const useUsers = () => {
         concurrent(10),
         sortBy((u) => u.createdAt),
         reverse,
-        tap(
-          map((u) => {
-            client.setQueryData(["user", u.id], u)
-          }),
-        ),
         toArray,
       ),
   })
