@@ -86,7 +86,7 @@ export default defineDriver((opts: SupabaseOptions) => {
     async getItem(key) {
       const { data, error } = await getClient()
         .storage.from(opts.bucket!)
-        .download(r(key))
+        .download(r(key.replace("$", "")))
 
       if (error) return null
       return await data.text()

@@ -36,7 +36,11 @@ export const fetchCache = "force-no-store"
 
 export default function RootLayout({ children }: Props) {
   return (
-    <html lang="en" className={cn(GeistMono.variable, GeistSans.variable)}>
+    <html
+      lang="en"
+      className={cn(GeistMono.variable, GeistSans.variable)}
+      suppressHydrationWarning
+    >
       <head>
         <meta
           name="viewport"
@@ -44,7 +48,10 @@ export default function RootLayout({ children }: Props) {
         />
       </head>
       <body className="antialiased">
-        <main className="mx-auto max-w-screen-sm bg-background">
+        <main
+          vaul-drawer-wrapper=""
+          className="mx-auto max-w-screen-sm bg-background"
+        >
           <Providers>{children}</Providers>
         </main>
         <Toaster richColors position="bottom-right" />

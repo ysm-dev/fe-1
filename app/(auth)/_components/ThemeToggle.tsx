@@ -13,12 +13,15 @@ export const ThemeToggle = () => {
       className="size-10"
       size="icon"
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      suppressHydrationWarning
     >
       {theme === "dark" ? (
         <Sun className="size-6 stroke-[1.5]" />
       ) : theme === "light" ? (
         <Moon className="size-6 stroke-[1.5]" />
-      ) : null}
+      ) : (
+        <></>
+      )}
     </Button>
   )
 }

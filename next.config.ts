@@ -7,6 +7,9 @@ const config: NextConfig = {
       {
         hostname: `avatars.githubusercontent.com`,
       },
+      {
+        hostname: `picsum.photos`,
+      },
     ],
   },
   compiler: {

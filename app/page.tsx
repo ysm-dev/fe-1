@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { IconFingerprint } from "@tabler/icons-react"
 import { Button } from "components/ui/button"
 import { Input } from "components/ui/input"
+import type { User } from "hooks/useUser"
 import { login } from "lib/passkeys/login"
 import { signup } from "lib/passkeys/signup"
 import { db } from "lib/supabase/db"
@@ -39,9 +40,7 @@ export default function Page() {
     const id = await (isRegistered ? login() : signup({ username }))
 
     if (isRegistered) {
-      const user = await db.getItem<{ id: string; username: string }>(
-        `user:${id}`,
-      )
+      const user = await db.getItem<User>(`user:${id}`)
 
       if (user) {
         setId(id)

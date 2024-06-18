@@ -9,7 +9,7 @@ export default function Page() {
   return (
     <div className="grid grid-cols-2 gap-4 p-4 sm:grid-cols-3">
       {users.map((user) => (
-        <UserCard key={user.username} userId={user.id} />
+        <UserCard key={user.id} userId={user.id} />
       ))}
     </div>
   )

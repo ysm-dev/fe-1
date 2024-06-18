@@ -38,7 +38,7 @@ function Resolved() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+      <DropdownMenuTrigger>
         <Image
           priority
           src={avatar}

@@ -1,7 +1,5 @@
 import {
   concurrent,
-  filter,
-  identity,
   map,
   pipe,
   reverse,
@@ -11,41 +9,43 @@ import {
   toAsync,
 } from "@fxts/core"
 import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query"
-import type { User } from "hooks/useUser"
+import type { Post } from "app/(auth)/posts/_hooks/usePost"
 import { db } from "lib/supabase/db"
 import { assert } from "utils/assert"
 
-export const useUsers = () => {
+export const usePosts = () => {
   const client = useQueryClient()
 
   const { data, ...rest } = useSuspenseQuery({
-    queryKey: ["users"],
-    queryFn: () =>
-      pipe(
-        db.getKeys(`user`),
+    queryKey: ["posts"],
+    queryFn: async () => {
+      const posts = await pipe(
+        db.getKeys(`post`),
         toAsync,
         map(async (k) => {
-          console.log({ k })
-          const [user, meta] = await Promise.all([
-            db.getItem<User>(k),
+          const [post, meta] = await Promise.all([
+            db.getItem<Post>(k),
             db.getMeta(k),
           ])
 
-          assert(user, `User not found: ${k}`)
+          assert(post, `Post not found: ${k}`)
 
-          return { ...user, createdAt: meta.created_at! }
+          return { ...post, createdAt: meta.created_at! }
         }),
         concurrent(10),
         sortBy((u) => u.createdAt),
         reverse,
         tap(
-          map((u) => {
-            client.setQueryData(["user", u.id], u)
+          map((p) => {
+            client.setQueryData(["posts", p.id], p)
           }),
         ),
         toArray,
-      ),
+      )
+
+      return posts
+    },
   })
 
-  return { users: data!, ...rest }
+  return { posts: data!, ...rest }
 }

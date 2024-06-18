@@ -1,5 +1,6 @@
-import { useSuspenseQuery } from "@tanstack/react-query"
+import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query"
 import { db } from "lib/supabase/db"
+import ms from "ms"
 import { redirect, useParams, useRouter } from "next/navigation"
 import { useLocalStorage } from "react-use"
 import { isServer } from "utils/isServer"
@@ -14,12 +15,12 @@ export const useUser = (paramId?: string) => {
     redirect("/")
   }
 
+  const client = useQueryClient()
+
   const { data: user, ...rest } = useSuspenseQuery({
     queryKey: ["user", id],
     queryFn: async () => {
-      const user = await db.getItem<{ id: string; username: string }>(
-        `user:${id}`,
-      )
+      const user = await db.getItem<User>(`user:${id}`)
 
       if (!user) {
         replace("/")
@@ -35,8 +36,10 @@ export const useUser = (paramId?: string) => {
       return {
         ...data.user,
         id,
-      }
+      } satisfies User
     },
+    initialData: client.getQueryData<User>(["user", id]),
+    staleTime: ms("10m"),
   })
 
   return { user: user!, ...rest }
@@ -47,7 +50,7 @@ export interface R {
 }
 
 export interface User {
-  id: number
+  id: string
   name: string
   twitter: string | null
   username: string
