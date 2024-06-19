@@ -1,9 +1,9 @@
 import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query"
 import { db } from "lib/supabase/db"
-import ms from "ms"
 import { redirect, useParams, useRouter } from "next/navigation"
 import { useLocalStorage } from "react-use"
 import { isServer } from "utils/isServer"
+import { wait } from "utils/wait"
 
 export const useUser = (paramId?: string) => {
   const [localId] = useLocalStorage("app:id", "")

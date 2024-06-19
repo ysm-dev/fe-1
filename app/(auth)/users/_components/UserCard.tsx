@@ -1,10 +1,10 @@
 import { IconBrandGithub, IconBrandTwitter } from "@tabler/icons-react"
+import { AsyncBoundary } from "components/AsyncBoundary"
 import { Button } from "components/ui/button"
 import { useUser } from "hooks/useUser"
 import { cn } from "lib/utils"
 import Image from "next/image"
 import Link from "next/link"
-import { Suspense } from "react"
 
 type Props = {
   userId: string
@@ -12,21 +12,24 @@ type Props = {
 
 export function UserCard(props: Props) {
   return (
-    <Suspense fallback={<Pending />}>
+    <AsyncBoundary pending={<Pending />} rejected={() => <Rejected />}>
       <Resolved {...props} />
-    </Suspense>
+    </AsyncBoundary>
   )
 }
 
 export function Pending() {
   return (
-    <article className="flex h-fit animate-pulse flex-col items-center gap-2 overflow-hidden rounded-2xl border">
+    <a
+      href="#"
+      className="flex h-fit animate-pulse flex-col items-center gap-2 overflow-hidden rounded-2xl border"
+    >
       <div className="aspect-square w-full bg-foreground/15" />
       <div className="flex w-full flex-col gap-2 p-3 text-left">
-        <div className={cn("h-5 w-2/3 rounded-full bg-foreground/15 py-1")} />
+        <h2 className={cn("h-5 w-2/3 rounded-full bg-foreground/15 py-1")} />
         <div className="size-7" />
       </div>
-    </article>
+    </a>
   )
 }
 
@@ -76,5 +79,25 @@ function Resolved({ userId }: Props) {
         </div>
       </div>
     </Link>
+  )
+}
+
+function Rejected() {
+  return (
+    <article className="flex h-fit flex-col items-center gap-2 overflow-hidden rounded-2xl border">
+      <Image
+        priority
+        unoptimized
+        src={`https://em-content.zobj.net/source/microsoft-teams/363/thinking-face_1f914.png`}
+        width={256}
+        height={256}
+        alt="error"
+        className="aspect-square w-full"
+      />
+      <div className="flex w-full flex-col gap-2 p-3 text-left">
+        <h2 className="">{`일시적인 오류가 있습니다`}</h2>
+        <div className="size-7" />
+      </div>
+    </article>
   )
 }

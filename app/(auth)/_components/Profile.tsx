@@ -5,6 +5,7 @@ import {
   IconBrandTwitter,
   IconLogout,
 } from "@tabler/icons-react"
+import { AsyncBoundary } from "@toss/async-boundary"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,13 +17,12 @@ import { useUser } from "hooks/useUser"
 import { UserRound } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import { Suspense } from "react"
 
 export function Profile() {
   return (
-    <Suspense fallback={<Pending />}>
+    <AsyncBoundary pendingFallback={<Pending />} rejectedFallback={() => null}>
       <Resolved />
-    </Suspense>
+    </AsyncBoundary>
   )
 }
 

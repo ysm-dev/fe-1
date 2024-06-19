@@ -1,8 +1,8 @@
 import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query"
 import { db } from "lib/supabase/db"
-import ms from "ms"
 import { useParams } from "next/navigation"
 import { assert } from "utils/assert"
+import { wait } from "utils/wait"
 
 export type Post = {
   id: string
@@ -24,6 +24,10 @@ export const usePost = (paramId?: string) => {
     queryKey: ["posts", id],
     queryFn: async () => {
       const post = await db.getItem<Post>(`post:${id}`)
+
+      await wait(1000)
+
+      // throw new Error()
 
       assert(post, "Post not found")
 

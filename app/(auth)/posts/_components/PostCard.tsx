@@ -1,9 +1,9 @@
 import { usePost } from "app/(auth)/posts/_hooks/usePost"
+import { AsyncBoundary } from "components/AsyncBoundary"
 import { useUser } from "hooks/useUser"
 import { cn } from "lib/utils"
 import Image from "next/image"
 import Link from "next/link"
-import { Suspense } from "react"
 
 type Props = {
   postId: string
@@ -11,9 +11,9 @@ type Props = {
 
 export function PostCard(props: Props) {
   return (
-    <Suspense fallback={<Pending />}>
+    <AsyncBoundary pending={<Pending />} rejected={() => <Rejected />}>
       <Resolved {...props} />
-    </Suspense>
+    </AsyncBoundary>
   )
 }
 
@@ -68,5 +68,25 @@ function Resolved({ postId }: Props) {
         </Link>
       </div>
     </Link>
+  )
+}
+
+function Rejected() {
+  return (
+    <article className="relative flex h-fit flex-col items-center gap-2 overflow-hidden rounded-2xl border">
+      <Image
+        priority
+        unoptimized
+        src={`https://em-content.zobj.net/source/microsoft-teams/363/thinking-face_1f914.png`}
+        width={200}
+        height={200}
+        alt="error"
+        className="mx-auto aspect-[8/5] w-full object-contain p-2"
+      />
+      <div className="flex w-full flex-col gap-2 p-3 text-left">
+        <h2 className="">{`일시적인 오류가 있습니다`}</h2>
+        <div className="size-7" />
+      </div>
+    </article>
   )
 }

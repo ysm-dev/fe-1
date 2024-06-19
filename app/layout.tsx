@@ -7,7 +7,6 @@ import { GeistMono } from "geist/font/mono"
 import { GeistSans } from "geist/font/sans"
 import { cn } from "lib/utils"
 import type { Metadata } from "next"
-import { useTheme } from "next-themes"
 import type { ReactNode } from "react"
 
 type Props = {
