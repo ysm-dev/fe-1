@@ -1,6 +1,7 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useQueryClient } from "@tanstack/react-query"
 import type { Post } from "app/(auth)/posts/_hooks/usePost"
 import { Loader } from "components/Loader"
 import { Button } from "components/ui/button"
@@ -45,6 +46,8 @@ export const WriteDrawer = ({ toggle }: Props) => {
 
   const { push } = useRouter()
 
+  const client = useQueryClient()
+
   const onSubmit = handleSubmit(async ({ title, content }) => {
     const id = nanoid(6)
 
@@ -63,6 +66,8 @@ export const WriteDrawer = ({ toggle }: Props) => {
     push(`/posts/${id}`)
 
     toggle(false)
+
+    client.invalidateQueries({ queryKey: ["posts"] })
   })
 
   return (
