@@ -25,7 +25,7 @@ export const usePost = (paramId?: string) => {
     queryFn: async () => {
       const post = await db.getItem<Post>(`post:${id}`)
 
-      await wait(1000)
+      // await wait(1000)
 
       // throw new Error()
 
